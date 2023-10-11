@@ -158,4 +158,22 @@ const updateBook = (req, h) => {
   });
 };
 
-export { findBook, getAllBooks, postBook, updateBook };
+const deleteBook = (req, h) => {
+  const { bookId } = req.params;
+
+  const bookIndex = books.findIndex((book) => book.id == bookId);
+
+  if (bookIndex === -1) {
+    return responseNotFound(h, {
+      message: 'Buku gagal dihapus. Id tidak ditemukan',
+    });
+  }
+
+  books.splice(bookIndex, 1);
+
+  return responseJustMessage(h, {
+    message: 'Buku berhasil dihapus',
+  });
+};
+
+export { deleteBook, findBook, getAllBooks, postBook, updateBook };
