@@ -2,6 +2,7 @@ import {
   findBook,
   getAllBooks,
   postBook,
+  updateBook,
 } from './controllers/book_controller.js';
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     method: 'POST',
     path: '/books',
     handler: postBook,
+  },
+  {
+    method: 'PUT',
+    path: '/books/{bookId}',
+    handler: updateBook,
   },
 ];
 

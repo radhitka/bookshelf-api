@@ -1,3 +1,17 @@
+const responseJustMessage = (
+  h,
+  { code = 200, status = 'success', message = 'Sukses' }
+) => {
+  const response = h.response({
+    status: status,
+    message: message,
+  });
+
+  response.code(code);
+
+  return response;
+};
+
 const responseSuccess = (h, { code = 200, data = {} }) => {
   const response = h.response({
     status: 'success',
@@ -58,6 +72,7 @@ export {
   responseBadRequest,
   responseCreated,
   responseError,
+  responseJustMessage,
   responseNotFound,
   responseSuccess,
 };

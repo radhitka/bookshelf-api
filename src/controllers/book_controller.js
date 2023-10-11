@@ -4,9 +4,11 @@ import { allBooksResources } from '../resources/book_resources.js';
 import {
   responseBadRequest,
   responseCreated,
+  responseJustMessage,
   responseNotFound,
   responseSuccess,
 } from '../response/response.js';
+import { isNull, validateIsBiggerThan } from '../validation/index.js';
 
 const getAllBooks = (req, h) => {
   return responseSuccess(h, {
@@ -67,13 +69,13 @@ const postBook = (req, h) => {
     updatedAt,
   };
 
-  if (name == null || name == '') {
+  if (isNull(name)) {
     return responseBadRequest(h, {
       message: 'Gagal menambahkan buku. Mohon isi nama buku',
     });
   }
 
-  if (readPage > pageCount) {
+  if (validateIsBiggerThan(readPage, pageCount)) {
     return responseBadRequest(h, {
       message:
         'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
@@ -98,4 +100,62 @@ const postBook = (req, h) => {
   });
 };
 
-export { findBook, getAllBooks, postBook };
+const updateBook = (req, h) => {
+  const { bookId } = req.params;
+
+  const {
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+  } = req.payload;
+
+  const updatedAt = new Date().toISOString();
+
+  const finished = pageCount == readPage;
+
+  if (isNull(name)) {
+    return responseBadRequest(h, {
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+    });
+  }
+
+  if (validateIsBiggerThan(readPage, pageCount)) {
+    return responseBadRequest(h, {
+      message:
+        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+  }
+
+  const bookIndex = books.findIndex((book) => book.id == bookId);
+
+  if (bookIndex === -1) {
+    return responseNotFound(h, {
+      message: 'Gagal memperbarui buku. Id tidak ditemukan',
+    });
+  }
+
+  books[bookIndex] = {
+    ...books[bookIndex],
+    name,
+    year,
+    author,
+    summary,
+    publisher,
+    pageCount,
+    readPage,
+    reading,
+    updatedAt,
+    finished,
+  };
+
+  return responseJustMessage(h, {
+    message: 'Buku berhasil diperbarui',
+  });
+};
+
+export { findBook, getAllBooks, postBook, updateBook };
