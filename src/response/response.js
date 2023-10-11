@@ -1,7 +1,6 @@
-const responseSuccess = (h, { code = 200, message = 'Success', data = {} }) => {
+const responseSuccess = (h, { code = 200, data = {} }) => {
   const response = h.response({
     status: 'success',
-    message: message,
     data: data,
   });
 

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import books from '../models/book_model.js';
+import { allBooks } from '../resources/book_resources.js';
 import {
   responseBadRequest,
   responseCreated,
@@ -8,8 +9,9 @@ import {
 
 const getAllBooks = (req, h) => {
   return responseSuccess(h, {
-    message: 'Sukses list Books',
-    data: books,
+    data: {
+      books: allBooks(books),
+    },
   });
 };
 
