@@ -1,6 +1,10 @@
 import { nanoid } from 'nanoid';
 import books from '../models/book_model.js';
-import { responseSuccess } from '../response/response.js';
+import {
+  responseBadRequest,
+  responseCreated,
+  responseSuccess,
+} from '../response/response.js';
 
 const getAllBooks = (req, h) => {
   return responseSuccess(h, {
@@ -42,11 +46,34 @@ const postBook = (req, h) => {
     updatedAt,
   };
 
+  if (name == null || name == '') {
+    return responseBadRequest(h, {
+      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+    });
+  }
+
+  if (readPage > pageCount) {
+    return responseBadRequest(h, {
+      message:
+        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+    });
+  }
+
   books.push(newBook);
 
-  return responseSuccess(h, {
-    message: 'Sukses list Books',
-    data: books,
+  const isSuccess = books.filter((book) => book.id == id).length > 0;
+
+  if (isSuccess == false) {
+    return responseBadRequest(h, {
+      message: 'Gagal menambahkan buku',
+    });
+  }
+
+  return responseCreated(h, {
+    message: 'Buku berhasil ditambahkan',
+    data: {
+      bookId: id,
+    },
   });
 };
 

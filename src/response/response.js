@@ -10,9 +10,21 @@ const responseSuccess = (h, { code = 200, message = 'Success', data = {} }) => {
   return response;
 };
 
+const responseCreated = (h, { code = 201, message = 'Success', data = {} }) => {
+  const response = h.response({
+    status: 'success',
+    message: message,
+    data: data,
+  });
+
+  response.code(code);
+
+  return response;
+};
+
 const responseNotFound = (h, { code = 404, message = 'Not Found' }) => {
   const response = h.response({
-    status: 'not found',
+    status: 'fail',
     message: message,
   });
 
@@ -23,7 +35,7 @@ const responseNotFound = (h, { code = 404, message = 'Not Found' }) => {
 
 const responseError = (h, { code = 500, message = 'Error' }) => {
   const response = h.response({
-    status: 'false',
+    status: 'fail',
     message: message,
   });
 
@@ -32,4 +44,21 @@ const responseError = (h, { code = 500, message = 'Error' }) => {
   return response;
 };
 
-export { responseError, responseNotFound, responseSuccess };
+const responseBadRequest = (h, { code = 400, message = 'Error' }) => {
+  const response = h.response({
+    status: 'fail',
+    message: message,
+  });
+
+  response.code(code);
+
+  return response;
+};
+
+export {
+  responseBadRequest,
+  responseCreated,
+  responseError,
+  responseNotFound,
+  responseSuccess,
+};
