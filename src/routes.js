@@ -1,10 +1,19 @@
-import { getAllBooks, postBook } from './controllers/book_controller.js';
+import {
+  findBook,
+  getAllBooks,
+  postBook,
+} from './controllers/book_controller.js';
 
 const routes = [
   {
     method: 'GET',
     path: '/books',
     handler: getAllBooks,
+  },
+  {
+    method: 'GET',
+    path: '/books/{bookId}',
+    handler: findBook,
   },
   {
     method: 'POST',

@@ -1,4 +1,4 @@
-const allBooks = (books) => {
+const allBooksResources = (books) => {
   return books.map((item) => {
     return {
       id: item.id,
@@ -8,4 +8,4 @@ const allBooks = (books) => {
   });
 };
 
-export { allBooks };
+export { allBooksResources };

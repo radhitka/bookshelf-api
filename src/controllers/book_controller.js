@@ -1,16 +1,35 @@
 import { nanoid } from 'nanoid';
 import books from '../models/book_model.js';
-import { allBooks } from '../resources/book_resources.js';
+import { allBooksResources } from '../resources/book_resources.js';
 import {
   responseBadRequest,
   responseCreated,
+  responseNotFound,
   responseSuccess,
 } from '../response/response.js';
 
 const getAllBooks = (req, h) => {
   return responseSuccess(h, {
     data: {
-      books: allBooks(books),
+      books: allBooksResources(books),
+    },
+  });
+};
+
+const findBook = (req, h) => {
+  const { bookId } = req.params;
+
+  const book = books.filter((book) => book.id == bookId)[0];
+
+  if (book === undefined) {
+    return responseNotFound(h, {
+      message: 'Buku tidak ditemukan',
+    });
+  }
+
+  return responseSuccess(h, {
+    data: {
+      book: book,
     },
   });
 };
@@ -79,4 +98,4 @@ const postBook = (req, h) => {
   });
 };
 
-export { getAllBooks, postBook };
+export { findBook, getAllBooks, postBook };
