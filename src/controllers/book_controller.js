@@ -148,14 +148,14 @@ const updateBook = (req, h) => {
 
   if (isNull(name)) {
     return responseBadRequest(h, {
-      message: 'Gagal menambahkan buku. Mohon isi nama buku',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku',
     });
   }
 
   if (validateIsBiggerThan(readPage, pageCount)) {
     return responseBadRequest(h, {
       message:
-        'Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount',
+        'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount',
     });
   }
 
