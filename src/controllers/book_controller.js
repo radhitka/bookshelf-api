@@ -11,9 +11,37 @@ import {
 import { isNull, validateIsBiggerThan } from '../validation/index.js';
 
 const getAllBooks = (req, h) => {
+  const { name, reading, finished } = req.query;
+
+  let filterData = books;
+
+  filterData = filterData.filter((book) => {
+    if (reading !== undefined && finished !== undefined) {
+      return book.finished == finished && book.reading == reading;
+    }
+
+    if (reading !== undefined) {
+      return book.reading == reading;
+    }
+
+    if (finished !== undefined) {
+      return book.finished == finished;
+    }
+
+    return true;
+  });
+
+  filterData = filterData.filter((book) => {
+    if (name) {
+      return book.name && book.name.toLowerCase().includes(name.toLowerCase());
+    }
+
+    return true;
+  });
+
   return responseSuccess(h, {
     data: {
-      books: allBooksResources(books),
+      books: allBooksResources(filterData),
     },
   });
 };
